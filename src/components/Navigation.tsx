@@ -19,13 +19,13 @@ export default function Navigation() {
   return (
     <div className="nav w-nav px-6 py-4">
       <div className="nav-container">
-        <Link href="/" className="brand padding-right-24px w-nav-brand">
+        <Link href="/" className="brand pr-6 w-nav-brand">
           <Image
             src="/images/logo.svg"
             alt="AI Safety logo"
             width={150}
             height={50}
-            className="display-block"
+            className="block"
           />
         </Link>
 
@@ -34,7 +34,7 @@ export default function Navigation() {
             <Link
               key={item.href}
               href={item.href}
-              className="nav-item w-inline-block"
+              className="nav-item inline-block"
             >
               <div className="nav-item-icon drop-shadow-dark">
                 <Image
