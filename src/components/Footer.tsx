@@ -5,7 +5,7 @@ import UpButton from './UpButton'
 export default function Footer() {
   return (
     <footer className="site-footer">
-      <div className="footer-content">
+      <div className="content-container">
         <div className="footer-grid">
           <div className="footer-main">
             <Image
