@@ -23,8 +23,8 @@ export default function Navigation() {
           <Image
             src="/images/logo.svg"
             alt="AI Safety logo"
-            width={150}
-            height={50}
+            width={139}
+            height={24}
             className="block"
           />
         </Link>

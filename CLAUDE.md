@@ -72,6 +72,10 @@ src/
 3. **Small, focused commits** with clear messages
 4. **Test changes** locally before committing
 
+### Tool Issues (Environment-Specific)
+
+- **Grep tool failure**: If the Grep tool returns "No matches found" for patterns that clearly exist, use `grep` via Bash tool instead. This appears to be due to a missing ripgrep binary that fails silently. (Note: This may be specific to certain development environments and not apply to all users of this repository.)
+
 ## Common Patterns
 
 ### Component Structure
