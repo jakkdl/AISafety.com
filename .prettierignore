@@ -1,0 +1,29 @@
+# Dependencies
+node_modules
+
+# Build outputs
+.next/
+out/
+build/
+dist/
+
+# Environment files
+.env
+.env.local
+.env.production
+.env.development
+
+# WebFlow exported code
+code_export/
+
+# Backup directory
+backup/
+
+# Lock files
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Generated files
+*.min.js
+*.min.css
