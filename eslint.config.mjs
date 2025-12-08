@@ -14,6 +14,8 @@ const eslintConfig = defineConfig([
     'next-env.d.ts',
     // Ignore WebFlow exported code
     'code_export/**',
+    // Ignore backup directory
+    'backup/**',
     '*.config.js',
     '*.config.mjs',
   ]),

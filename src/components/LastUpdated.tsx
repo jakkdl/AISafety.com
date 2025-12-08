@@ -86,7 +86,7 @@ export default function LastUpdated({
     }
 
     fetchLastUpdated()
-  }, [apiEndpoint])
+  }, [apiEndpoint, format])
 
   if (loading) {
     return <div className={`${className}`}>Loading last updated...</div>
