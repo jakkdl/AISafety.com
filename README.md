@@ -26,10 +26,10 @@ npm run type-check
 
 ## Environment Variables
 
-Copy `.env.local` and fill in your Airtable credentials:
+Create a `.env.local` file with your Airtable credentials:
 
 ```
-AIRTABLE_API_KEY=your_api_key_here
+AIRTABLE_TOKEN=your_personal_access_token_here
 AIRTABLE_BASE_ID=your_base_id_here
 ```
 

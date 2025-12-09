@@ -1,14 +1,14 @@
 import { NextResponse } from 'next/server'
 
 const AIRTABLE_TOKEN = process.env.AIRTABLE_TOKEN
-const BASE_ID = 'appF8XfZUGXtfi40E'
+const BASE_ID = process.env.AIRTABLE_BASE_ID
 const METADATA_TABLE_ID = 'tblsglkum9Op43mvq'
 const METADATA_RECORD_ID = 'rec0oNUMVZuYVXU82'
 
 export async function GET() {
-  if (!AIRTABLE_TOKEN) {
+  if (!AIRTABLE_TOKEN || !BASE_ID) {
     return NextResponse.json(
-      { error: 'Airtable token not configured' },
+      { error: 'Airtable credentials not configured' },
       { status: 500 }
     )
   }

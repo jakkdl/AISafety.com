@@ -36,7 +36,7 @@ export default function Navigation() {
               href={item.href}
               className="nav-item inline-block"
             >
-              <div className="nav-item-icon drop-shadow-dark">
+              <div className="nav-item-icon">
                 <Image
                   width={16}
                   height={16}

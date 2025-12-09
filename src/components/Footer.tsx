@@ -30,6 +30,7 @@ export default function Footer() {
             <Link
               href="https://airtable.com/appF8XfZUGXtfi40E/pagndDvdya1DSqoxN/form"
               target="_blank"
+              rel="noopener noreferrer"
               className="footer-link"
             >
               Suggest a correction
@@ -40,6 +41,7 @@ export default function Footer() {
             <Link
               href="https://www.every.org/alignment-ecosystem-development"
               target="_blank"
+              rel="noopener noreferrer"
               className="footer-link"
             >
               Donate
@@ -51,6 +53,7 @@ export default function Footer() {
             <Link
               href="https://aisafetyeventsandtraining.substack.com/"
               target="_blank"
+              rel="noopener noreferrer"
               className="footer-link"
             >
               AI Safety Events &amp; Training
@@ -58,6 +61,7 @@ export default function Footer() {
             <Link
               href="https://aisafetyfunding.substack.com/"
               target="_blank"
+              rel="noopener noreferrer"
               className="footer-link"
             >
               AI Safety Funding (coming soon)
@@ -65,6 +69,7 @@ export default function Footer() {
             <Link
               href="https://aisafetycom.substack.com/"
               target="_blank"
+              rel="noopener noreferrer"
               className="footer-link"
             >
               AISafety.com Updates

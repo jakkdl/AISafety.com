@@ -69,6 +69,7 @@ export default function Home() {
           <a
             href="https://www.effectivealtruism.org/ea-global/events/eagxamsterdam"
             target="_blank"
+            rel="noopener noreferrer"
             className="button-secondary"
           >
             Learn more
@@ -144,6 +145,7 @@ export default function Home() {
           <a
             href="https://join.slack.com/t/ai-alignment/shared_invite/zt-3jqiicbfr-u1lLvDWy6E5WL7uucV~opw"
             target="_blank"
+            rel="noopener noreferrer"
             className="button-secondary"
           >
             Join
@@ -198,6 +200,7 @@ export default function Home() {
               <a
                 href="https://bluedot.org/courses"
                 target="_blank"
+                rel="noopener noreferrer"
                 className="button-secondary"
               >
                 View curricula
@@ -290,6 +293,7 @@ export default function Home() {
             <a
               href="https://survivalandflourishing.fund/"
               target="_blank"
+              rel="noopener noreferrer"
               className="button-secondary"
             >
               Learn more
@@ -354,6 +358,7 @@ export default function Home() {
               <a
                 href="https://aisafetyfeed.com/"
                 target="_blank"
+                rel="noopener noreferrer"
                 className="button-secondary"
               >
                 Learn more
@@ -395,6 +400,7 @@ export default function Home() {
         <a
           href="https://aisafety.info/"
           target="_blank"
+          rel="noopener noreferrer"
           className="button-primary w-inline-block"
         >
           <p className="paragraph-12">AISafety.info</p>

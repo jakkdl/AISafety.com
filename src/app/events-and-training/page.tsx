@@ -32,6 +32,7 @@ export default function EventsAndTrainingPage() {
           <Link
             href="https://aisafetyeventsandtraining.substack.com/"
             target="_blank"
+            rel="noopener noreferrer"
             className="action-link"
           >
             <h3 className="action-title">Subscribe to newsletter →</h3>
@@ -44,6 +45,7 @@ export default function EventsAndTrainingPage() {
           <Link
             href="https://airtable.com/appF8XfZUGXtfi40E/pagyqtPZ2BFcKU6ys/form"
             target="_blank"
+            rel="noopener noreferrer"
             className="action-link hide-mobile"
           >
             <h3 className="action-title">Suggest entry →</h3>
@@ -56,6 +58,7 @@ export default function EventsAndTrainingPage() {
           <Link
             href="https://airtable.com/appF8XfZUGXtfi40E/pagndDvdya1DSqoxN/form"
             target="_blank"
+            rel="noopener noreferrer"
             className="action-link hide-mobile"
           >
             <h3 className="action-title">Suggest correction →</h3>
