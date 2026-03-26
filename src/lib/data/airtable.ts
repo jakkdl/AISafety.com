@@ -1,7 +1,5 @@
 import fs from 'fs'
 import path from 'path'
-import https from 'https'
-import http from 'http'
 
 export interface AirtableRawRecord {
   id: string
@@ -24,7 +22,6 @@ interface FetchOptions {
 }
 
 const CACHE_DIR = path.join(process.cwd(), 'public', 'images', 'airtable-cache')
-const CONCURRENCY = 20
 
 function isAttachmentArray(value: unknown): value is AirtableAttachment[] {
   return (
@@ -37,6 +34,8 @@ function isAttachmentArray(value: unknown): value is AirtableAttachment[] {
   )
 }
 
+// Extensions that get converted to WebP by the prebuild script
+const CONVERTIBLE_EXTENSIONS = ['.png', '.jpg', '.jpeg']
 const ALLOWED_EXTENSIONS = ['.png', '.jpg', '.jpeg', '.svg', '.webp', '.gif']
 
 function getExtension(url: string, filename: string): string {
@@ -57,126 +56,30 @@ function getExtension(url: string, filename: string): string {
   )
 }
 
-function downloadFile(url: string, dest: string): Promise<void> {
-  return new Promise((resolve, reject) => {
-    const file = fs.createWriteStream(dest)
-    file.on('error', err => {
-      reject(err)
-    })
-    const protocol = url.startsWith('https') ? https : http
-
-    protocol
-      .get(url, response => {
-        if (response.statusCode === 301 || response.statusCode === 302) {
-          const redirectUrl = response.headers.location
-          if (redirectUrl) {
-            file.close()
-            fs.unlinkSync(dest)
-            downloadFile(redirectUrl, dest).then(resolve).catch(reject)
-            return
-          }
-        }
-
-        if (response.statusCode !== 200) {
-          file.close()
-          fs.unlinkSync(dest)
-          reject(new Error(`HTTP ${response.statusCode}`))
-          return
-        }
-
-        response.pipe(file)
-        file.on('finish', () => {
-          file.close()
-          resolve()
-        })
-      })
-      .on('error', err => {
-        file.close()
-        fs.unlink(dest, () => {})
-        reject(err)
-      })
-  })
-}
-
-interface DownloadTask {
-  recordId: string
-  fieldName: string
-  attachment: AirtableAttachment
-  localPath: string
-  localUrl: string
-}
-
-async function downloadAttachments(
-  records: AirtableRawRecord[]
-): Promise<void> {
-  if (!fs.existsSync(CACHE_DIR)) {
-    fs.mkdirSync(CACHE_DIR, { recursive: true })
-  }
-
-  const tasks: DownloadTask[] = []
-
+/**
+ * Replace Airtable attachment URLs with local cached paths.
+ * Images are downloaded and converted to WebP by the prebuild script.
+ */
+function resolveAttachmentUrls(records: AirtableRawRecord[]): void {
   for (const record of records) {
-    for (const [fieldName, value] of Object.entries(record.fields)) {
+    for (const [, value] of Object.entries(record.fields)) {
       if (!isAttachmentArray(value)) continue
 
       const attachment = value[0]
       const ext = getExtension(attachment.url, attachment.filename)
-      // Use attachment.id in filename so cache auto-invalidates when image is replaced in Airtable
-      const localFilename = `${attachment.id}${ext}`
-      const localPath = path.join(CACHE_DIR, localFilename)
-      const localUrl = `/images/airtable-cache/${localFilename}`
 
-      if (fs.existsSync(localPath)) {
-        // Already cached, just update the URL
-        value[0] = { ...attachment, url: localUrl }
-        continue
+      // Check for WebP version first (converted by prebuild), then original
+      const isConvertible = CONVERTIBLE_EXTENSIONS.includes(ext.toLowerCase())
+      const webpFilename = `${attachment.id}.webp`
+      const originalFilename = `${attachment.id}${ext}`
+
+      if (isConvertible && fs.existsSync(path.join(CACHE_DIR, webpFilename))) {
+        value[0] = { ...attachment, url: `/images/airtable-cache/${webpFilename}` }
+      } else if (fs.existsSync(path.join(CACHE_DIR, originalFilename))) {
+        value[0] = { ...attachment, url: `/images/airtable-cache/${originalFilename}` }
       }
-
-      tasks.push({
-        recordId: record.id,
-        fieldName,
-        attachment,
-        localPath,
-        localUrl,
-      })
+      // If not cached, keep original Airtable URL (will work but not optimized)
     }
-  }
-
-  if (tasks.length === 0) return
-
-  console.log(`Downloading ${tasks.length} attachments...`)
-
-  const failures: string[] = []
-
-  // Download in parallel with concurrency limit
-  for (let i = 0; i < tasks.length; i += CONCURRENCY) {
-    const batch = tasks.slice(i, i + CONCURRENCY)
-    const results = await Promise.allSettled(
-      batch.map(task => downloadFile(task.attachment.url, task.localPath))
-    )
-
-    for (let j = 0; j < results.length; j++) {
-      const task = batch[j]
-      const result = results[j]
-      const record = records.find(r => r.id === task.recordId)
-
-      if (result.status === 'fulfilled' && record) {
-        const field = record.fields[task.fieldName]
-        if (isAttachmentArray(field)) {
-          field[0] = { ...field[0], url: task.localUrl }
-        }
-      } else if (result.status === 'rejected') {
-        failures.push(
-          `${task.fieldName} for ${task.recordId}: ${result.reason}`
-        )
-      }
-    }
-  }
-
-  if (failures.length > 0) {
-    throw new Error(
-      `Failed to download ${failures.length} attachments:\n${failures.join('\n')}`
-    )
   }
 }
 
@@ -240,8 +143,8 @@ export async function fetchAirtableRecords(
     offset = data.offset || null
   } while (offset)
 
-  // Download all attachments and replace URLs with local paths
-  await downloadAttachments(allRecords)
+  // Replace Airtable URLs with local cached paths
+  resolveAttachmentUrls(allRecords)
 
   return allRecords
 }

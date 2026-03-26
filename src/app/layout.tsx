@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     title: 'AISafety.com',
     description:
       'The hub for AI existential safety, providing resources to help you learn about and help mitigate the risks from advanced AI.',
-    images: [{ url: '/images/link-preview.png' }],
+    images: [{ url: '/images/link-preview.webp' }],
     type: 'website',
   },
   twitter: {
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     title: 'AISafety.com',
     description:
       'The hub for AI existential safety, providing resources to help you learn about and help mitigate the risks from advanced AI.',
-    images: ['/images/link-preview.png'],
+    images: ['/images/link-preview.webp'],
   },
 }
 

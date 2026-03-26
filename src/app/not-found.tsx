@@ -7,7 +7,7 @@ export default function NotFound() {
       className={`flex flex-col gap-40px items-center justify-center ${styles['page-wrap']}`}
     >
       <Image
-        src="/images/hal9000.png"
+        src="/images/hal9000.webp"
         alt="HAL 9000 computer interface"
         width={201}
         height={201}
