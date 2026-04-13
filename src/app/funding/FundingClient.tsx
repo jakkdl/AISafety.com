@@ -41,22 +41,13 @@ export default function FundingClient({ funders }: FundingClientProps) {
       }
 
       if (selectedAccepting.length > 0) {
-        const hasMatch = selectedAccepting.some(a =>
-          (funder.acceptingApplications || '')
-            .toLowerCase()
-            .includes(a.toLowerCase())
-        )
-        if (!hasMatch) return false
+        if (!selectedAccepting.includes(funder.acceptingApplications || ''))
+          return false
       }
 
       if (selectedTypes.length > 0) {
-        const funderTypes = (funder.type || '')
-          .toLowerCase()
-          .split(',')
-          .map(t => t.trim())
-        const hasMatch = selectedTypes.some(t =>
-          funderTypes.some(ft => ft.includes(t.toLowerCase()))
-        )
+        const funderTypes = (funder.type || '').split(',').map(t => t.trim())
+        const hasMatch = selectedTypes.some(t => funderTypes.includes(t))
         if (!hasMatch) return false
       }
 
@@ -68,11 +59,7 @@ export default function FundingClient({ funders }: FundingClientProps) {
     return funders.reduce(
       (counts, funder) => {
         for (const option of acceptingOptions) {
-          if (
-            (funder.acceptingApplications || '')
-              .toLowerCase()
-              .includes(option.toLowerCase())
-          ) {
+          if ((funder.acceptingApplications || '') === option) {
             counts[option] = (counts[option] || 0) + 1
           }
         }
@@ -85,12 +72,9 @@ export default function FundingClient({ funders }: FundingClientProps) {
   const typeCounts = useMemo(() => {
     return funders.reduce(
       (counts, funder) => {
-        const types = (funder.type || '')
-          .toLowerCase()
-          .split(',')
-          .map(t => t.trim())
+        const types = (funder.type || '').split(',').map(t => t.trim())
         for (const option of typeOptions) {
-          if (types.some(t => t.includes(option.toLowerCase()))) {
+          if (types.includes(option)) {
             counts[option] = (counts[option] || 0) + 1
           }
         }
